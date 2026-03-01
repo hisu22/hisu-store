@@ -1,3 +1,4 @@
+"use client";
 const nav = ["Home", "Shop", "Product", "Contact"];
 
 const categories = [
