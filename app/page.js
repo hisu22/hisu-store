@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { defaultProducts } from "@/app/du-lieu-san-pham";
 
 const nav = [
   { name: "Trang chủ", link: "/" },
@@ -23,57 +25,6 @@ const categories = [
     title: "Đồ trang trí",
     desc: "Lọ hoa • Tranh • Phụ kiện",
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1600&q=60",
-  },
-];
-
-const products = [
-  {
-    id: 1,
-    name: "Đèn ngủ Moon Light",
-    price: 299000,
-    oldPrice: 399000,
-    badge: "Hot",
-    img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&w=1400&q=60",
-  },
-  {
-    id: 2,
-    name: "Kệ gỗ mini",
-    price: 459000,
-    oldPrice: 599000,
-    badge: "Sale",
-    img: "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1400&q=60",
-  },
-  {
-    id: 3,
-    name: "Lọ hoa gốm trắng",
-    price: 189000,
-    oldPrice: 249000,
-    badge: "New",
-    img: "https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1400&q=60",
-  },
-  {
-    id: 4,
-    name: "Tranh decor treo tường",
-    price: 139000,
-    oldPrice: 199000,
-    badge: "Hot",
-    img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1400&q=60",
-  },
-  {
-    id: 5,
-    name: "Đồng hồ treo tường",
-    price: 349000,
-    oldPrice: 499000,
-    badge: "Sale",
-    img: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1400&q=60",
-  },
-  {
-    id: 6,
-    name: "Nến thơm chill",
-    price: 99000,
-    oldPrice: 149000,
-    badge: "New",
-    img: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1400&q=60",
   },
 ];
 
@@ -100,6 +51,45 @@ function Badge({ text }) {
 }
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("admin_products") || "[]");
+
+    if (saved.length > 0) {
+      setProducts(saved);
+    } else {
+      localStorage.setItem("admin_products", JSON.stringify(defaultProducts));
+      setProducts(defaultProducts);
+    }
+
+    const user = JSON.parse(localStorage.getItem("currentUser") || "null");
+    setCurrentUser(user);
+  }, []);
+
+  const featuredProducts = products.slice(0, 6);
+
+  const addToCart = (product) => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const index = cart.findIndex((item) => item.id === product.id);
+
+    if (index !== -1) {
+      cart[index].quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Đã thêm vào giỏ hàng");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    alert("Đã đăng xuất");
+    window.location.href = "/";
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <div className="border-b">
@@ -167,12 +157,31 @@ export default function Home() {
             >
               Giỏ hàng
             </Link>
-            <Link
-              href="/dang-nhap"
-              className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-            >
-              Đăng nhập
-            </Link>
+
+            {currentUser?.role === "admin" && (
+              <Link
+                href="/admin"
+                className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+              >
+                Quản trị
+              </Link>
+            )}
+
+            {currentUser ? (
+              <button
+                onClick={handleLogout}
+                className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Đăng xuất
+              </button>
+            ) : (
+              <Link
+                href="/dang-nhap"
+                className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+              >
+                Đăng nhập
+              </Link>
+            )}
           </div>
         </div>
       </header>
@@ -308,8 +317,9 @@ export default function Home() {
         </div>
 
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((p) => {
+          {featuredProducts.map((p) => {
             const percent = off(p.oldPrice, p.price);
+
             return (
               <div
                 key={p.id}
@@ -331,16 +341,17 @@ export default function Home() {
                     )}
                   </div>
 
-                  <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center opacity-0 transition group-hover:opacity-100">
-                    <div className="pointer-events-auto flex gap-2">
-                      <Link
-                        href="/gio-hang"
+                  <div className="absolute inset-x-0 bottom-4 flex justify-center opacity-0 transition group-hover:opacity-100">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => addToCart(p)}
                         className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
                       >
                         Thêm vào giỏ hàng
-                      </Link>
+                      </button>
+
                       <Link
-                        href="/cua-hang"
+                        href={`/san-pham/${p.id}`}
                         className="rounded-full border bg-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-50"
                       >
                         Xem chi tiết

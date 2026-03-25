@@ -20,7 +20,7 @@ export default function DangNhapPage() {
         })
       );
       alert("Đăng nhập thành công");
-      window.location.href = "/admin";
+      window.location.href = "/";
       return;
     }
 
@@ -50,7 +50,10 @@ export default function DangNhapPage() {
   return (
     <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
       <div className="mx-auto max-w-5xl">
-        <Link href="/" className="text-sm font-semibold text-slate-600 hover:text-rose-500">
+        <Link
+          href="/"
+          className="text-sm font-semibold text-slate-600 hover:text-rose-500"
+        >
           ← Quay về trang chủ
         </Link>
 
@@ -65,16 +68,20 @@ export default function DangNhapPage() {
 
           <div className="p-8 lg:p-10">
             <div className="mb-6">
-              <div className="text-sm font-semibold text-rose-500">Chào mừng trở lại</div>
+              <div className="text-sm font-semibold text-rose-500">
+                Chào mừng trở lại
+              </div>
               <h1 className="mt-2 text-3xl font-extrabold">Đăng nhập</h1>
               <p className="mt-2 text-sm text-slate-600">
-                Với admin: tài khoản <b>admin</b>, mật khẩu <b>admin123</b>
+                Admin: tài khoản <b>admin</b>, mật khẩu <b>admin123</b>
               </p>
             </div>
 
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-2 block text-sm font-semibold">Tên đăng nhập / Email</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Tên đăng nhập / Email
+                </label>
                 <input
                   type="text"
                   value={username}
@@ -85,7 +92,9 @@ export default function DangNhapPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Mật khẩu</label>
+                <label className="mb-2 block text-sm font-semibold">
+                  Mật khẩu
+                </label>
                 <input
                   type="password"
                   value={password}
@@ -105,7 +114,10 @@ export default function DangNhapPage() {
 
             <p className="mt-6 text-sm text-slate-600">
               Chưa có tài khoản?{" "}
-              <Link href="/dang-ky" className="font-semibold text-rose-500 hover:text-rose-600">
+              <Link
+                href="/dang-ky"
+                className="font-semibold text-rose-500 hover:text-rose-600"
+              >
                 Đăng ký ngay
               </Link>
             </p>
