@@ -1,6 +1,6 @@
 "use client";
 
-const nav = ["Home", "Shop", "Decor", "Contact"];
+const nav = ["Trang chủ", "Cửa hàng", "Trang trí", "Liên hệ"];
 
 const categories = [
   {
@@ -99,7 +99,7 @@ export default function Home() {
       {/* Top bar */}
       <div className="border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs text-slate-600">
-          <div>Free shipping for orders over 199k</div>
+          <div>Miễn phí vận chuyển cho đơn hàng trên 199k</div>
           <div className="flex items-center gap-4">
             <span>Support</span>
             <span>Track order</span>
@@ -141,20 +141,20 @@ export default function Home() {
             <div className="flex w-full items-center rounded-full border px-4 py-2">
               <input
                 className="w-full text-sm outline-none"
-                placeholder="Search products..."
+                placeholder="Tìm kiếm..."
               />
               <button className="text-sm font-semibold text-slate-700 hover:text-rose-500">
-                Search
+                Tìm
               </button>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50">
-              Cart
+              Giỏ hàng
             </button>
             <button className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-              Login
+              Đăng nhập
             </button>
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
             <div className="absolute left-8 top-1/2 -translate-y-1/2 text-white">
               <div className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-                New Collection
+                Hàng mới cập bến
               </div>
               <h1 className="mt-3 text-4xl font-extrabold leading-tight">
                 Modern Decor
@@ -187,10 +187,10 @@ export default function Home() {
                   href="#products"
                   className="rounded-full bg-rose-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-rose-600"
                 >
-                  Shop now
+                  Mua thôi
                 </a>
                 <button className="rounded-full border border-white/35 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10">
-                  Learn more
+                  Xem thêm
                 </button>
               </div>
             </div>
@@ -200,8 +200,8 @@ export default function Home() {
           <div className="grid gap-6">
             <div className="relative overflow-hidden rounded-3xl border bg-white">
               <div className="p-6">
-                <div className="text-xs font-semibold text-rose-500">Hot deals</div>
-                <div className="mt-1 text-2xl font-extrabold">Decor week</div>
+                <div className="text-xs font-semibold text-rose-500">Hàng nóng</div>
+                <div className="mt-1 text-2xl font-extrabold">Tuần lễ trang trí</div>
                 <p className="mt-1 text-sm text-slate-600">
                   Ưu đãi cho những món đồ nhỏ nhưng làm căn phòng đẹp hơn.
                 </p>
@@ -209,7 +209,7 @@ export default function Home() {
                   href="#products"
                   className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
                 >
-                  Discover →
+                  Tìm Hiểu →
                 </a>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
@@ -223,8 +223,8 @@ export default function Home() {
 
             <div className="relative overflow-hidden rounded-3xl border bg-white">
               <div className="p-6">
-                <div className="text-xs font-semibold text-rose-500">Style</div>
-                <div className="mt-1 text-2xl font-extrabold">Cozy corner</div>
+                <div className="text-xs font-semibold text-rose-500">Phong cách</div>
+                <div className="mt-1 text-2xl font-extrabold">Góc nhỏ</div>
                 <p className="mt-1 text-sm text-slate-600">
                   Biến góc nhỏ của bạn thành nơi chill đúng nghĩa.
                 </p>
@@ -232,7 +232,7 @@ export default function Home() {
                   href="#products"
                   className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
                 >
-                  Shop →
+                  Mua thôi →
                 </a>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
@@ -266,7 +266,7 @@ export default function Home() {
                 <div className="text-xl font-extrabold">{c.title}</div>
                 <div className="mt-1 text-sm text-white/85">{c.desc}</div>
                 <div className="mt-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
-                  Explore →
+                  Xem thêm →
                 </div>
               </div>
             </a>
@@ -278,17 +278,17 @@ export default function Home() {
       <section id="products" className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <div className="text-xs font-semibold text-rose-500">Popular</div>
+            <div className="text-xs font-semibold text-rose-500">Phổ biến</div>
             <h2 className="mt-1 text-2xl font-extrabold tracking-tight">
-              Featured products
+              Mặt hàng hot 
             </h2>
           </div>
           <div className="hidden items-center gap-2 text-sm sm:flex">
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              All
+              Tất cả
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Decor
+              Trang trí
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
               Lighting
@@ -323,10 +323,10 @@ export default function Home() {
                   <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center opacity-0 transition group-hover:opacity-100">
                     <div className="pointer-events-auto flex gap-2">
                       <button className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
-                        Add to cart
+                        Thêm vào giỏ hàng
                       </button>
                       <button className="rounded-full border bg-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-50">
-                        View
+                        Xem chi tiết
                       </button>
                     </div>
                   </div>
@@ -364,7 +364,7 @@ export default function Home() {
             </div>
 
             <div className="text-sm">
-              <div className="font-bold">Quick links</div>
+              <div className="font-bold">Liên kết</div>
               <div className="mt-3 grid gap-2 text-slate-600">
                 <a
                   href="#"
@@ -391,14 +391,14 @@ export default function Home() {
             </div>
 
             <div className="text-sm">
-              <div className="font-bold">Newsletter</div>
+              <div className="font-bold">Tin Tức</div>
               <div className="mt-3 flex gap-2">
                 <input
                   className="w-full rounded-full border px-4 py-2 outline-none focus:ring-2 focus:ring-rose-200"
                   placeholder="Email..."
                 />
                 <button className="rounded-full bg-rose-500 px-5 py-2 font-semibold text-white hover:bg-rose-600">
-                  Join
+                  Đăng ký
                 </button>
               </div>
             </div>
