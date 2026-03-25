@@ -108,21 +108,22 @@ export default function Home() {
       {/* Header */}
       <header className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
-          <div className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-2xl bg-black font-extrabold text-white">
+          <div className="flex min-w-[220px] items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-2xl font-extrabold text-white">
               H
             </div>
-            <div className="leading-none">
-              <div className="text-base font-extrabold tracking-tight">
-                Hisu store
+
+            <div className="leading-tight">
+              <div className="text-3xl font-extrabold tracking-tight whitespace-nowrap">
+              Hisu store
               </div>
-              <div className="text-sm text-slate-500">
-                Trang Trí • Nội Thất • Phong Cách
+              <div className="mt-1 text-base text-slate-500 whitespace-nowrap">
+                Trang trí • Nội thất • Phong cách
               </div>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 ml-10 text-base font-semibold whitespace-nowrap">
+          <nav className="ml-8 hidden items-center gap-6 text-2xl font-semibold whitespace-nowrap md:flex">
             {nav.map((t) => (
               <a
                 key={t}
