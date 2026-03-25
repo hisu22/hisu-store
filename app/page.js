@@ -1,6 +1,13 @@
 "use client";
 
-const nav = ["Trang chủ", "Cửa hàng", "Trang trí", "Liên hệ"];
+import Link from "next/link";
+
+const nav = [
+  { name: "Trang chủ", link: "/" },
+  { name: "Cửa hàng", link: "/cua-hang" },
+  { name: "Trang trí", link: "/cua-hang" },
+  { name: "Liên hệ", link: "#footer" },
+];
 
 const categories = [
   {
@@ -100,44 +107,52 @@ export default function Home() {
       <div className="border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs text-slate-600">
           <div>Miễn phí vận chuyển cho đơn hàng trên 199k</div>
-          <div className="flex items-center gap-4">
-          </div>
+          <div></div>
         </div>
       </div>
 
       {/* Header */}
       <header className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
-          <div className="flex min-w-[230px] items-center gap-3">
+          <Link href="/" className="flex min-w-[230px] items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-black text-xl font-extrabold text-white">
               H
             </div>
 
             <div className="leading-tight">
-              <div className="text-2xl font-extrabold tracking-tight whitespace-nowrap">
+              <div className="whitespace-nowrap text-2xl font-extrabold tracking-tight">
                 Hisu store
               </div>
-              <div className="mt-1 text-sm text-slate-500 whitespace-nowrap">
+              <div className="mt-1 whitespace-nowrap text-sm text-slate-500">
                 Trang trí • Nội thất • Phong cách
               </div>
             </div>
-          </div>
+          </Link>
 
-          <nav className="ml-8 hidden items-center gap-6 text-base font-semibold whitespace-nowrap md:flex">
-            {nav.map((t) => (
-              <a
-                key={t}
-                href="#"
-                className="transition hover:text-rose-500"
-                onClick={(e) => e.preventDefault()}
-              >
-                {t}
-              </a>
-            ))}
+          <nav className="ml-8 hidden items-center gap-6 whitespace-nowrap text-base font-semibold md:flex">
+            {nav.map((item) =>
+              item.link.startsWith("#") ? (
+                <a
+                  key={item.name}
+                  href={item.link}
+                  className="transition hover:text-rose-500"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.name}
+                  href={item.link}
+                  className="transition hover:text-rose-500"
+                >
+                  {item.name}
+                </Link>
+              )
+            )}
           </nav>
 
           <div className="ml-auto hidden w-full max-w-md items-center lg:flex">
-            <div className="flex w-full items-center rounded-full border px-5 py-2.5">
+            <div className="flex w-full items-center rounded-full border px-4 py-2">
               <input
                 className="w-full text-sm outline-none"
                 placeholder="Tìm kiếm..."
@@ -149,12 +164,18 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="rounded-full border px-5 py-2.5 text-sm font-semibold hover:bg-slate-50">
+            <Link
+              href="/gio-hang"
+              className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+            >
               Giỏ hàng
-            </button>
-            <button className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
+            </Link>
+            <Link
+              href="/dang-nhap"
+              className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+            >
               Đăng nhập
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -188,9 +209,12 @@ export default function Home() {
                 >
                   Mua thôi
                 </a>
-                <button className="rounded-full border border-white/35 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10">
+                <a
+                  href="#products"
+                  className="rounded-full border border-white/35 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+                >
                   Xem thêm
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -208,7 +232,7 @@ export default function Home() {
                   href="#products"
                   className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
                 >
-                  Tìm Hiểu →
+                  Tìm hiểu →
                 </a>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
@@ -279,7 +303,7 @@ export default function Home() {
           <div>
             <div className="text-xs font-semibold text-rose-500">Phổ biến</div>
             <h2 className="mt-1 text-2xl font-extrabold tracking-tight">
-              Mặt hàng hot 
+              Mặt hàng hot
             </h2>
           </div>
           <div className="hidden items-center gap-2 text-sm sm:flex">
@@ -290,7 +314,7 @@ export default function Home() {
               Trang trí
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Đồ Điện tử
+              Đèn
             </button>
           </div>
         </div>
@@ -321,12 +345,18 @@ export default function Home() {
 
                   <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center opacity-0 transition group-hover:opacity-100">
                     <div className="pointer-events-auto flex gap-2">
-                      <button className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
+                      <Link
+                        href="/gio-hang"
+                        className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800"
+                      >
                         Thêm vào giỏ hàng
-                      </button>
-                      <button className="rounded-full border bg-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-50">
+                      </Link>
+                      <Link
+                        href="/cua-hang"
+                        className="rounded-full border bg-white px-5 py-2.5 text-sm font-semibold hover:bg-slate-50"
+                      >
                         Xem chi tiết
-                      </button>
+                      </Link>
                     </div>
                   </div>
 
@@ -352,7 +382,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-white">
+      <footer id="footer" className="border-t bg-white">
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid gap-8 md:grid-cols-3">
             <div>
@@ -365,32 +395,20 @@ export default function Home() {
             <div className="text-sm">
               <div className="font-bold">Liên kết</div>
               <div className="mt-3 grid gap-2 text-slate-600">
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="hover:text-rose-500"
-                >
+                <Link href="/cua-hang" className="hover:text-rose-500">
                   Tất cả sản phẩm
-                </a>
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="hover:text-rose-500"
-                >
+                </Link>
+                <a href="#top" className="hover:text-rose-500">
                   Về chúng tôi
                 </a>
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="hover:text-rose-500"
-                >
+                <a href="#footer" className="hover:text-rose-500">
                   Liên hệ
                 </a>
               </div>
             </div>
 
             <div className="text-sm">
-              <div className="font-bold">Tin Tức</div>
+              <div className="font-bold">Tin tức</div>
               <div className="mt-3 flex gap-2">
                 <input
                   className="w-full rounded-full border px-4 py-2 outline-none focus:ring-2 focus:ring-rose-200"
