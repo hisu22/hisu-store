@@ -1,8 +1,42 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 export default function DangKyPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    if (!name || !password) {
+      alert("Vui lòng nhập đầy đủ họ tên và mật khẩu");
+      return;
+    }
+
+    if (email && !email.endsWith("@gmail.com")) {
+      alert("Email phải có đuôi @gmail.com");
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    users.push({
+      name,
+      email,
+      password,
+      role: "user",
+    });
+
+    localStorage.setItem("users", JSON.stringify(users));
+    alert("Đăng ký thành công");
+
+    setName("");
+    setEmail("");
+    setPassword("");
+  };
+
   return (
     <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
       <div className="mx-auto max-w-5xl">
@@ -23,16 +57,15 @@ export default function DangKyPage() {
             <div className="mb-6">
               <div className="text-sm font-semibold text-rose-500">Tạo tài khoản mới</div>
               <h1 className="mt-2 text-3xl font-extrabold">Đăng ký</h1>
-              <p className="mt-2 text-sm text-slate-600">
-                Tạo tài khoản để lưu thông tin và mua sắm thuận tiện hơn.
-              </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleRegister}>
               <div>
                 <label className="mb-2 block text-sm font-semibold">Họ và tên</label>
                 <input
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Nhập họ và tên"
                   className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
                 />
@@ -41,8 +74,10 @@ export default function DangKyPage() {
               <div>
                 <label className="mb-2 block text-sm font-semibold">Email</label>
                 <input
-                  type="email"
-                  placeholder="Nhập email"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Nhập email bất kỳ có đuôi @gmail.com"
                   className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
                 />
               </div>
@@ -51,6 +86,8 @@ export default function DangKyPage() {
                 <label className="mb-2 block text-sm font-semibold">Mật khẩu</label>
                 <input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Nhập mật khẩu"
                   className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
                 />

@@ -1,8 +1,52 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 
 export default function DangNhapPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (username === "admin" && password === "admin123") {
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          name: "Admin",
+          username: "admin",
+          role: "admin",
+        })
+      );
+      alert("Đăng nhập thành công");
+      window.location.href = "/admin";
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+    const foundUser = users.find(
+      (user) =>
+        (user.email === username || user.name === username) &&
+        user.password === password
+    );
+
+    if (foundUser) {
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({
+          name: foundUser.name,
+          username: foundUser.email || foundUser.name,
+          role: foundUser.role || "user",
+        })
+      );
+      alert("Đăng nhập thành công");
+      window.location.href = "/";
+    } else {
+      alert("Đăng nhập lỗi");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
       <div className="mx-auto max-w-5xl">
@@ -24,16 +68,18 @@ export default function DangNhapPage() {
               <div className="text-sm font-semibold text-rose-500">Chào mừng trở lại</div>
               <h1 className="mt-2 text-3xl font-extrabold">Đăng nhập</h1>
               <p className="mt-2 text-sm text-slate-600">
-                Đăng nhập để tiếp tục mua sắm và quản lý tài khoản của bạn.
+                Với admin: tài khoản <b>admin</b>, mật khẩu <b>admin123</b>
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label className="mb-2 block text-sm font-semibold">Email</label>
+                <label className="mb-2 block text-sm font-semibold">Tên đăng nhập / Email</label>
                 <input
-                  type="email"
-                  placeholder="Nhập email"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Nhập tên đăng nhập hoặc email"
                   className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
                 />
               </div>
@@ -42,6 +88,8 @@ export default function DangNhapPage() {
                 <label className="mb-2 block text-sm font-semibold">Mật khẩu</label>
                 <input
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Nhập mật khẩu"
                   className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
                 />

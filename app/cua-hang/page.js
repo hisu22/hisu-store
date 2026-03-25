@@ -132,11 +132,23 @@ export default function CuaHangPage() {
                 <div className="text-sm font-bold">{item.name}</div>
                 <div className="mt-2 text-lg font-extrabold">{vnd(item.price)}</div>
                 <div className="mt-4 flex gap-2">
-                  <button className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                  <button
+                    onClick={() => {
+                        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+                        const index = cart.findIndex((p) => p.id === item.id);
+
+                        if (index !== -1) {
+                            cart[index].quantity += 1;
+                        } else {
+                            cart.push({ ...item, quantity: 1 });
+                        }
+
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        alert("Đã thêm vào giỏ hàng");
+                    }}
+                    className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                  >
                     Thêm vào giỏ
-                  </button>
-                  <button className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50">
-                    Xem thêm
                   </button>
                 </div>
               </div>
