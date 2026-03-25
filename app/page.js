@@ -101,8 +101,6 @@ export default function Home() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs text-slate-600">
           <div>Miễn phí vận chuyển cho đơn hàng trên 199k</div>
           <div className="flex items-center gap-4">
-            <span>Support</span>
-            <span>Track order</span>
           </div>
         </div>
       </div>
@@ -119,7 +117,7 @@ export default function Home() {
                 Hisu store
               </div>
               <div className="text-[11px] text-slate-500">
-                decor • furniture • lifestyle
+                Trang Trí • Nội Thất • Phong Cách
               </div>
             </div>
           </div>
@@ -175,9 +173,9 @@ export default function Home() {
                 Hàng mới cập bến
               </div>
               <h1 className="mt-3 text-4xl font-extrabold leading-tight">
-                Modern Decor
+                Bộ sưu tập
                 <br />
-                Collection
+                Thời thượng
               </h1>
               <p className="mt-2 max-w-md text-sm text-white/85">
                 Trang trí không gian sống của bạn với phong cách tối giản và hiện đại.
@@ -291,7 +289,7 @@ export default function Home() {
               Trang trí
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Lighting
+              Đồ Điện tử
             </button>
           </div>
         </div>
@@ -371,21 +369,21 @@ export default function Home() {
                   onClick={(e) => e.preventDefault()}
                   className="hover:text-rose-500"
                 >
-                  All products
+                  Tất cả sản phẩm
                 </a>
                 <a
                   href="#"
                   onClick={(e) => e.preventDefault()}
                   className="hover:text-rose-500"
                 >
-                  About
+                  Về chúng tôi
                 </a>
                 <a
                   href="#"
                   onClick={(e) => e.preventDefault()}
                   className="hover:text-rose-500"
                 >
-                  Contact
+                  Liên hệ
                 </a>
               </div>
             </div>
