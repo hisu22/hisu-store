@@ -116,13 +116,13 @@ export default function Home() {
               <div className="text-base font-extrabold tracking-tight">
                 Hisu store
               </div>
-              <div className="text-[11px] text-slate-500">
+              <div className="text-sm text-slate-500">
                 Trang Trí • Nội Thất • Phong Cách
               </div>
             </div>
           </div>
 
-          <nav className="ml-8 hidden items-center gap-6 text-sm font-semibold md:flex">
+          <nav className="hidden md:flex items-center gap-8 ml-10 text-base font-semibold whitespace-nowrap">
             {nav.map((t) => (
               <a
                 key={t}
@@ -136,7 +136,7 @@ export default function Home() {
           </nav>
 
           <div className="ml-auto hidden w-full max-w-md items-center lg:flex">
-            <div className="flex w-full items-center rounded-full border px-4 py-2">
+            <div className="flex w-full items-center rounded-full border px-5 py-2.5">
               <input
                 className="w-full text-sm outline-none"
                 placeholder="Tìm kiếm..."
@@ -148,10 +148,10 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50">
+            <button className="rounded-full border px-5 py-2.5 text-sm font-semibold hover:bg-slate-50">
               Giỏ hàng
             </button>
-            <button className="rounded-full bg-black px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+            <button className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
               Đăng nhập
             </button>
           </div>
