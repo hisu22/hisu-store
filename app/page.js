@@ -4,8 +4,7 @@ import Link from "next/link";
 
 const nav = [
   { name: "Trang chủ", link: "/" },
-  { name: "Cửa hàng", link: "/cua-hang" },
-  { name: "Trang trí", link: "/cua-hang" },
+  { name: "Sản phẩm", link: "/cua-hang" },
   { name: "Liên hệ", link: "#footer" },
 ];
 
@@ -103,7 +102,6 @@ function Badge({ text }) {
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Top bar */}
       <div className="border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs text-slate-600">
           <div>Miễn phí vận chuyển cho đơn hàng trên 199k</div>
@@ -111,7 +109,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Header */}
       <header className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
           <Link href="/" className="flex min-w-[230px] items-center gap-3">
@@ -180,7 +177,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Hero */}
       <section className="mx-auto max-w-6xl px-4 py-8">
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="relative overflow-hidden rounded-3xl bg-slate-100">
@@ -203,12 +199,12 @@ export default function Home() {
                 Trang trí không gian sống của bạn với phong cách tối giản và hiện đại.
               </p>
               <div className="mt-5 flex gap-2">
-                <a
-                  href="#products"
+                <Link
+                  href="/cua-hang"
                   className="rounded-full bg-rose-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-rose-600"
                 >
                   Mua thôi
-                </a>
+                </Link>
                 <a
                   href="#products"
                   className="rounded-full border border-white/35 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
@@ -219,7 +215,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Promo blocks */}
           <div className="grid gap-6">
             <div className="relative overflow-hidden rounded-3xl border bg-white">
               <div className="p-6">
@@ -228,12 +223,12 @@ export default function Home() {
                 <p className="mt-1 text-sm text-slate-600">
                   Ưu đãi cho những món đồ nhỏ nhưng làm căn phòng đẹp hơn.
                 </p>
-                <a
-                  href="#products"
+                <Link
+                  href="/cua-hang"
                   className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
                 >
                   Tìm hiểu →
-                </a>
+                </Link>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
                 <img
@@ -251,12 +246,12 @@ export default function Home() {
                 <p className="mt-1 text-sm text-slate-600">
                   Biến góc nhỏ của bạn thành nơi chill đúng nghĩa.
                 </p>
-                <a
-                  href="#products"
+                <Link
+                  href="/cua-hang"
                   className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
                 >
                   Mua thôi →
-                </a>
+                </Link>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
                 <img
@@ -270,13 +265,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories */}
       <section className="mx-auto max-w-6xl px-4 py-2">
         <div className="grid gap-6 md:grid-cols-3">
           {categories.map((c) => (
-            <a
+            <Link
               key={c.title}
-              href="#products"
+              href="/cua-hang"
               className="group relative overflow-hidden rounded-3xl border bg-slate-100"
             >
               <img
@@ -292,12 +286,11 @@ export default function Home() {
                   Xem thêm →
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* Products */}
       <section id="products" className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -306,17 +299,12 @@ export default function Home() {
               Mặt hàng hot
             </h2>
           </div>
-          <div className="hidden items-center gap-2 text-sm sm:flex">
-            <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Tất cả
-            </button>
-            <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Trang trí
-            </button>
-            <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Đèn
-            </button>
-          </div>
+          <Link
+            href="/cua-hang"
+            className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+          >
+            Xem tất cả sản phẩm
+          </Link>
         </div>
 
         <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -381,7 +369,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer id="footer" className="border-t bg-white">
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid gap-8 md:grid-cols-3">
