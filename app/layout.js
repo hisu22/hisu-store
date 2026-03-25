@@ -12,23 +12,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Hisu store - Web bán hàng",
-  description: "Hisu store - Bán điện thoại, quần áo và phụ kiện",
+  title: "Hisu Store - Web bán đồ decor và nội thất",
+  description: "Hisu Store - Chuyên đồ decor, nội thất nhỏ và phụ kiện trang trí hiện đại",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <head>
-        {/* Thêm font ở đây nếu muốn */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
-
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

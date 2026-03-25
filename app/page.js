@@ -1,72 +1,73 @@
 "use client";
-const nav = ["Home", "Shop", "Product", "Contact"];
+
+const nav = ["Home", "Shop", "Decor", "Contact"];
 
 const categories = [
   {
-    title: "Phones",
-    desc: "iPhone • Samsung • Xiaomi",
-    img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=1600&q=60",
+    title: "Đèn trang trí",
+    desc: "Đèn ngủ • Đèn bàn • Chill",
+    img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=60",
   },
   {
-    title: "Clothes",
-    desc: "Hoodie • Tee • Jeans",
-    img: "https://images.unsplash.com/photo-1520975958225-5ddad8a3f281?auto=format&fit=crop&w=1600&q=60",
+    title: "Kệ & bàn nhỏ",
+    desc: "Gỗ • Minimal • Decor",
+    img: "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1600&q=60",
   },
   {
-    title: "Accessories",
-    desc: "Earbuds • Charger • Case",
-    img: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1600&q=60",
+    title: "Đồ trang trí",
+    desc: "Lọ hoa • Tranh • Phụ kiện",
+    img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1600&q=60",
   },
 ];
 
 const products = [
   {
     id: 1,
-    name: "iPhone 15 Pro Max 256GB",
-    price: 29990000,
-    oldPrice: 33990000,
-    badge: "Sale",
-    img: "https://images.unsplash.com/photo-1510557880182-3d4d3c1aa6fd?auto=format&fit=crop&w=1400&q=60",
+    name: "Đèn ngủ Moon Light",
+    price: 299000,
+    oldPrice: 399000,
+    badge: "Hot",
+    img: "https://images.unsplash.com/photo-1549187774-b4e9b0445b41?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: 2,
-    name: "Samsung Galaxy S24 Ultra",
-    price: 26990000,
-    oldPrice: 29990000,
-    badge: "Hot",
-    img: "https://images.unsplash.com/photo-1580915411954-282cb1b0d780?auto=format&fit=crop&w=1400&q=60",
+    name: "Kệ gỗ mini",
+    price: 459000,
+    oldPrice: 599000,
+    badge: "Sale",
+    img: "https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: 3,
-    name: "AirPods Pro (Gen 2)",
-    price: 4990000,
-    oldPrice: 5990000,
+    name: "Lọ hoa gốm trắng",
+    price: 189000,
+    oldPrice: 249000,
     badge: "New",
-    img: "https://images.unsplash.com/photo-1588159343745-445ae0b16383?auto=format&fit=crop&w=1400&q=60",
+    img: "https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: 4,
-    name: "Hoodie Basic Premium",
-    price: 299000,
-    oldPrice: 399000,
-    badge: "Sale",
-    img: "https://images.unsplash.com/photo-1520975958225-5ddad8a3f281?auto=format&fit=crop&w=1400&q=60",
+    name: "Tranh decor treo tường",
+    price: 139000,
+    oldPrice: 199000,
+    badge: "Hot",
+    img: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: 5,
-    name: "Jeans Slimfit",
-    price: 399000,
+    name: "Đồng hồ treo tường",
+    price: 349000,
     oldPrice: 499000,
-    badge: "Hot",
-    img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1400&q=60",
+    badge: "Sale",
+    img: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1400&q=60",
   },
   {
     id: 6,
-    name: "Tee Oversize",
-    price: 199000,
-    oldPrice: 249000,
+    name: "Nến thơm chill",
+    price: 99000,
+    oldPrice: 149000,
     badge: "New",
-    img: "https://images.unsplash.com/photo-1520975682031-aebf3b0f9b57?auto=format&fit=crop&w=1400&q=60",
+    img: "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1400&q=60",
   },
 ];
 
@@ -80,6 +81,7 @@ function Badge({ text }) {
     Hot: "bg-black text-white",
     New: "bg-emerald-500 text-white",
   };
+
   return (
     <span
       className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
@@ -94,7 +96,7 @@ function Badge({ text }) {
 export default function Home() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* Top bar (Essence vibe) */}
+      {/* Top bar */}
       <div className="border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-xs text-slate-600">
           <div>Free shipping for orders over 199k</div>
@@ -106,26 +108,28 @@ export default function Home() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur border-b">
+      <header className="sticky top-0 z-20 border-b bg-white/90 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4">
-          {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="grid h-10 w-10 place-items-center rounded-2xl bg-black text-white font-extrabold">
+            <div className="grid h-10 w-10 place-items-center rounded-2xl bg-black font-extrabold text-white">
               H
             </div>
             <div className="leading-none">
-              <div className="text-base font-extrabold tracking-tight">Hisu store</div>
-              <div className="text-[11px] text-slate-500">phones • clothes • accessories</div>
+              <div className="text-base font-extrabold tracking-tight">
+                Hisu store
+              </div>
+              <div className="text-[11px] text-slate-500">
+                decor • furniture • lifestyle
+              </div>
             </div>
           </div>
 
-          {/* Nav */}
-          <nav className="hidden md:flex items-center gap-6 ml-8 text-sm font-semibold">
+          <nav className="ml-8 hidden items-center gap-6 text-sm font-semibold md:flex">
             {nav.map((t) => (
               <a
                 key={t}
                 href="#"
-                className="hover:text-rose-500 transition"
+                className="transition hover:text-rose-500"
                 onClick={(e) => e.preventDefault()}
               >
                 {t}
@@ -133,8 +137,7 @@ export default function Home() {
             ))}
           </nav>
 
-          {/* Search */}
-          <div className="ml-auto hidden lg:flex w-full max-w-md items-center">
+          <div className="ml-auto hidden w-full max-w-md items-center lg:flex">
             <div className="flex w-full items-center rounded-full border px-4 py-2">
               <input
                 className="w-full text-sm outline-none"
@@ -146,7 +149,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Icons */}
           <div className="flex items-center gap-3">
             <button className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50">
               Cart
@@ -164,7 +166,7 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-3xl bg-slate-100">
             <img
               className="h-[420px] w-full object-cover"
-              src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1600&q=60"
+              src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=60"
               alt="Hero"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
@@ -173,12 +175,12 @@ export default function Home() {
                 New Collection
               </div>
               <h1 className="mt-3 text-4xl font-extrabold leading-tight">
-                Essence-style
+                Modern Decor
                 <br />
-                shop UI
+                Collection
               </h1>
               <p className="mt-2 max-w-md text-sm text-white/85">
-                Demo đồ án: UI tạm thời lên Vercel trước, rồi triển khai giỏ hàng/đặt hàng sau.
+                Trang trí không gian sống của bạn với phong cách tối giản và hiện đại.
               </p>
               <div className="mt-5 flex gap-2">
                 <a
@@ -194,23 +196,26 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right column - promo blocks */}
+          {/* Promo blocks */}
           <div className="grid gap-6">
             <div className="relative overflow-hidden rounded-3xl border bg-white">
               <div className="p-6">
                 <div className="text-xs font-semibold text-rose-500">Hot deals</div>
-                <div className="mt-1 text-2xl font-extrabold">Phones week</div>
+                <div className="mt-1 text-2xl font-extrabold">Decor week</div>
                 <p className="mt-1 text-sm text-slate-600">
-                  Up to 30% off selected models.
+                  Ưu đãi cho những món đồ nhỏ nhưng làm căn phòng đẹp hơn.
                 </p>
-                <a href="#products" className="mt-4 inline-block text-sm font-semibold hover:text-rose-500">
+                <a
+                  href="#products"
+                  className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
+                >
                   Discover →
                 </a>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
                 <img
                   className="h-full w-full object-cover"
-                  src="https://images.unsplash.com/photo-1523206489230-c012c64b2b48?auto=format&fit=crop&w=900&q=60"
+                  src="https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=900&q=60"
                   alt="promo"
                 />
               </div>
@@ -219,18 +224,21 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-3xl border bg-white">
               <div className="p-6">
                 <div className="text-xs font-semibold text-rose-500">Style</div>
-                <div className="mt-1 text-2xl font-extrabold">Clothes drop</div>
+                <div className="mt-1 text-2xl font-extrabold">Cozy corner</div>
                 <p className="mt-1 text-sm text-slate-600">
-                  Essentials for everyday outfit.
+                  Biến góc nhỏ của bạn thành nơi chill đúng nghĩa.
                 </p>
-                <a href="#products" className="mt-4 inline-block text-sm font-semibold hover:text-rose-500">
+                <a
+                  href="#products"
+                  className="mt-4 inline-block text-sm font-semibold hover:text-rose-500"
+                >
                   Shop →
                 </a>
               </div>
               <div className="absolute right-0 top-0 h-full w-44 bg-slate-100">
                 <img
                   className="h-full w-full object-cover"
-                  src="https://images.unsplash.com/photo-1520975958225-5ddad8a3f281?auto=format&fit=crop&w=900&q=60"
+                  src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=60"
                   alt="promo2"
                 />
               </div>
@@ -239,7 +247,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories (Essence style tiles) */}
+      {/* Categories */}
       <section className="mx-auto max-w-6xl px-4 py-2">
         <div className="grid gap-6 md:grid-cols-3">
           {categories.map((c) => (
@@ -254,7 +262,7 @@ export default function Home() {
                 className="h-56 w-full object-cover transition duration-300 group-hover:scale-[1.03]"
               />
               <div className="absolute inset-0 bg-black/30" />
-              <div className="absolute left-6 bottom-6 text-white">
+              <div className="absolute bottom-6 left-6 text-white">
                 <div className="text-xl font-extrabold">{c.title}</div>
                 <div className="mt-1 text-sm text-white/85">{c.desc}</div>
                 <div className="mt-3 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
@@ -275,15 +283,15 @@ export default function Home() {
               Featured products
             </h2>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-sm">
+          <div className="hidden items-center gap-2 text-sm sm:flex">
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
               All
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Phones
+              Decor
             </button>
             <button className="rounded-full border px-4 py-2 font-semibold hover:bg-slate-50">
-              Clothes
+              Lighting
             </button>
           </div>
         </div>
@@ -312,7 +320,6 @@ export default function Home() {
                     )}
                   </div>
 
-                  {/* Hover actions like Essence */}
                   <div className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center opacity-0 transition group-hover:opacity-100">
                     <div className="pointer-events-auto flex gap-2">
                       <button className="rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
@@ -324,7 +331,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* subtle overlay on hover */}
                   <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
                 </div>
 
@@ -353,17 +359,37 @@ export default function Home() {
             <div>
               <div className="text-lg font-extrabold">Hisu store</div>
               <p className="mt-2 text-sm text-slate-600">
-                UI theo style Essence (Colorlib vibe). Triển khai dần: giỏ hàng, checkout, admin.
+                Website bán đồ decor và nội thất nhỏ theo phong cách hiện đại, tối giản.
               </p>
             </div>
+
             <div className="text-sm">
               <div className="font-bold">Quick links</div>
               <div className="mt-3 grid gap-2 text-slate-600">
-                <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-rose-500">All products</a>
-                <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-rose-500">About</a>
-                <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-rose-500">Contact</a>
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="hover:text-rose-500"
+                >
+                  All products
+                </a>
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="hover:text-rose-500"
+                >
+                  About
+                </a>
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="hover:text-rose-500"
+                >
+                  Contact
+                </a>
               </div>
             </div>
+
             <div className="text-sm">
               <div className="font-bold">Newsletter</div>
               <div className="mt-3 flex gap-2">
