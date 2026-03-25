@@ -123,7 +123,7 @@ export default function Home() {
             </div>
           </div>
 
-          <nav className="ml-8 hidden items-center gap-5 text-sm font-semibold whitespace-nowrap md:flex">
+          <nav className="ml-8 hidden items-center gap-6 text-base font-semibold whitespace-nowrap md:flex">
             {nav.map((t) => (
               <a
                 key={t}
