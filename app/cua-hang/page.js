@@ -150,6 +150,12 @@ export default function CuaHangPage() {
                   >
                     Thêm vào giỏ
                   </button>
+                  <Link
+                     href={`/san-pham/${item.id}`}
+                     className="rounded-full border px-4 py-2 text-sm font-semibold hover:bg-slate-50"
+                  >
+                        Xem chi tiết
+                  </Link>
                 </div>
               </div>
             </div>
