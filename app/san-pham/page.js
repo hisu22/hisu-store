@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
-export default function SanPhamPage() {
+function SanPhamContent() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("tatca");
   const [selectedPrice, setSelectedPrice] = useState("tatca");
@@ -398,5 +398,12 @@ export default function SanPhamPage() {
         )}
       </section>
     </main>
+  );
+}
+export default function SanPhamPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#f7f3ee]" />}>
+      <SanPhamContent />
+    </Suspense>
   );
 }
