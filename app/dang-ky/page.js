@@ -63,14 +63,14 @@ export default function DangKyPage() {
 
               <p className="mt-4 max-w-[360px] text-base leading-7 text-black/60">
                 Đăng ký để bắt đầu mua sắm, lưu đơn hàng và trải nghiệm giao
-                diện hiện đại, tối giản của Hisu Store.
+                diện đầy phong cách của Hisu Store.
               </p>
             </div>
 
             <div className="rounded-[24px] bg-white/70 p-5 backdrop-blur">
               <p className="text-sm leading-6 text-black/60">
-                Tham gia nhanh để khám phá các sản phẩm decor, đèn và hot trend
-                theo phong cách gọn đẹp, dễ nhìn.
+                Tham gia nhanh để khám phá các sản phẩm decor, đèn và áo hot trend
+                theo phong cách genz.
               </p>
             </div>
           </div>
