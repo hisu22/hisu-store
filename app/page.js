@@ -404,7 +404,7 @@ export default function Home() {
           <div className="text-sm leading-7 text-black/55">
             © 2026 Hisu Store
             <br />
-            Thiết kế theo phong cách hiện đại, tối giản.
+            Phong cách - Phong cách - Phong cách - mck
           </div>
         </div>
       </footer>
