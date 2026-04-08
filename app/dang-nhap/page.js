@@ -84,14 +84,14 @@ export default function DangNhapPage() {
 
               <p className="mt-4 max-w-[360px] text-base leading-7 text-black/60">
                 Đăng nhập để tiếp tục mua sắm, xem đơn hàng và trải nghiệm giao
-                diện tối giản của Hisu Store.
+                diện đầy phong cách của Hisu Store.
               </p>
             </div>
 
             <div className="rounded-[24px] bg-white/70 p-5 backdrop-blur">
               <p className="text-sm leading-6 text-black/60">
                 Đèn decor, đồ trang trí và sản phẩm hot trend theo phong cách
-                hiện đại, gọn gàng và dễ dùng.
+                hiện đại, genz
               </p>
             </div>
           </div>
