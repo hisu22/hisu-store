@@ -1,142 +1,234 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { defaultProducts } from "@/app/du-lieu-san-pham";
+import { db, auth } from "../../../lib/firebase";
+import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
-const vnd = (n) => n.toLocaleString("vi-VN") + "đ";
+export default function ProductDetail() {
+  const params = useParams();
+  const id = params.id;
 
-export default function ChiTietSanPham({ params }) {
-  const [products, setProducts] = useState([]);
-  const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("admin_products") || "[]");
+    if (!id) return;
 
-    if (saved.length > 0) {
-      setProducts(saved);
-    } else {
-      localStorage.setItem("admin_products", JSON.stringify(defaultProducts));
-      setProducts(defaultProducts);
-    }
+    const fetchProduct = async () => {
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setProduct({
+            id: docSnap.id,
+            ...docSnap.data(),
+          });
+        }
+      } catch (error) {
+        console.error("Lỗi lấy chi tiết sản phẩm:", error);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+
+      if (!currentUser) {
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        const q = query(
+          collection(db, "users"),
+          where("uid", "==", currentUser.uid)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          setIsAdmin(userData.role === "admin");
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error("Lỗi kiểm tra quyền admin:", error);
+        setIsAdmin(false);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const product = useMemo(() => {
-    return products.find((item) => item.id === Number(params.id));
-  }, [products, params.id]);
-
-  const addToCart = () => {
-    if (!product) return;
-
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const index = cart.findIndex((item) => item.id === product.id);
-
-    if (index !== -1) {
-      cart[index].quantity += quantity;
-    } else {
-      cart.push({ ...product, quantity });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Đã thêm vào giỏ hàng");
-  };
-
-  if (products.length === 0) {
-    return (
-      <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-sm text-slate-500">Đang tải sản phẩm...</div>
-        </div>
-      </div>
-    );
-  }
+  const vnd = (price) => Number(price).toLocaleString("vi-VN") + "đ";
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
-        <div className="mx-auto max-w-5xl">
-          <Link
-            href="/cua-hang"
-            className="text-sm font-semibold text-slate-600 hover:text-rose-500"
-          >
-            ← Quay lại cửa hàng
-          </Link>
-          <div className="mt-8 text-xl font-bold">Không tìm thấy sản phẩm.</div>
-        </div>
-      </div>
+      <div className="p-10 text-center text-lg">Đang tải sản phẩm...</div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-screen bg-[#f6f3ee] text-[#171717]">
+      <header className="sticky top-0 z-50 border-b border-black/5 bg-[#f7f3ee]/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <Link href="/" className="text-xl font-semibold tracking-wide">
+            Hisu Store
+          </Link>
+
+          <nav className="hidden items-center gap-8 text-sm md:flex">
+            <a href="/#bo-suu-tap" className="hover:opacity-70">
+              Bộ sưu tập
+            </a>
+            <Link href="/san-pham" className="hover:opacity-70">
+              Sản phẩm
+            </Link>
+            <Link href="/gio-hang" className="hover:opacity-70">
+              Giỏ hàng
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            {user ? (
+              <>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm"
+                  >
+                    {isAdmin
+                      ? `Admin: ${user.displayName || user.email}`
+                      : `${user.displayName || user.email}`}
+                  </button>
+
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl">
+                      {!isAdmin && (
+                        <Link
+                          href="/don-hang"
+                          onClick={() => setShowUserMenu(false)}
+                          className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
+                        >
+                          Đơn hàng của tôi
+                        </Link>
+                      )}
+
+                      <Link
+                        href="/doi-mat-khau"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
+                      >
+                        Đổi mật khẩu
+                      </Link>
+
+                      <button
+                        onClick={() => signOut(auth)}
+                        className="block w-full px-4 py-3 text-left text-sm hover:bg-[#f4efe8]"
+                      >
+                        Đăng xuất
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="hidden rounded-full bg-black px-4 py-2 text-sm text-white md:inline-block"
+                  >
+                    Quản lý
+                  </Link>
+                )}
+              </>
+            ) : (
+              <Link
+                href="/dang-nhap"
+                className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm hover:opacity-70"
+              >
+                Đăng nhập
+              </Link>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto max-w-6xl px-6 py-10">
         <Link
-          href="/cua-hang"
-          className="text-sm font-semibold text-slate-600 hover:text-rose-500"
+          href="/"
+          className="mb-6 inline-block rounded-lg border bg-white px-4 py-2"
         >
-          ← Quay lại cửa hàng
+          ← Quay lại
         </Link>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-2">
-          <div className="overflow-hidden rounded-3xl border">
+        <div className="grid grid-cols-1 gap-8 rounded-3xl bg-white p-6 shadow md:grid-cols-2">
+          <div>
             <img
-              src={product.img}
+              src={product.image}
               alt={product.name}
-              className="h-[500px] w-full object-cover"
+              className="h-[500px] w-full rounded-2xl object-cover"
             />
           </div>
 
-          <div>
-            <div className="text-sm font-semibold text-rose-500">
-              Chi tiết sản phẩm
-            </div>
-            <h1 className="mt-2 text-3xl font-extrabold">{product.name}</h1>
-            <div className="mt-4 text-2xl font-extrabold">
-              {vnd(product.price)}
-            </div>
-            <p className="mt-4 text-slate-600">
-              {product.description || "Chưa có mô tả cho sản phẩm này."}
+          <div className="flex flex-col justify-center">
+            <p className="text-sm uppercase tracking-[0.2em] text-gray-500">
+              {product.category === "den"
+                ? "Đèn"
+                : product.category === "trangtri"
+                ? "Đồ trang trí"
+                : "Áo hot trend"}
             </p>
 
-            <div className="mt-6">
-              <div className="mb-2 text-sm font-semibold">Số lượng</div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setQuantity((q) => (q > 1 ? q - 1 : 1))}
-                  className="rounded-full border px-4 py-2 font-bold"
-                >
-                  -
-                </button>
+            <h1 className="mt-3 text-4xl font-bold">{product.name}</h1>
 
-                <span className="text-lg font-bold">{quantity}</span>
+            <p className="mt-4 text-2xl font-bold text-red-500">
+              {vnd(product.price)}
+            </p>
 
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="rounded-full border px-4 py-2 font-bold"
-                >
-                  +
-                </button>
-              </div>
-            </div>
+            <p className="mt-6 leading-7 text-gray-700">
+              {product.description}
+            </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button
-                onClick={addToCart}
-                className="rounded-full bg-black px-6 py-3 font-semibold text-white hover:bg-slate-800"
-              >
-                Thêm vào giỏ hàng
-              </button>
+            <button
+              onClick={() => {
+                const cartKey = auth.currentUser
+                  ? `cart_${auth.currentUser.uid}`
+                  : "cart_guest";
 
-              <Link
-                href="/gio-hang"
-                className="rounded-full border px-6 py-3 font-semibold hover:bg-slate-50"
-              >
-                Xem giỏ hàng
-              </Link>
-            </div>
+                let cart = JSON.parse(localStorage.getItem(cartKey) || "[]");
+
+                const exist = cart.find((item) => item.id === product.id);
+
+                if (exist) {
+                  exist.quantity += 1;
+                } else {
+                  cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1,
+                  });
+                }
+
+                localStorage.setItem(cartKey, JSON.stringify(cart));
+                alert("Đã thêm vào giỏ hàng");
+              }}
+              className="mt-8 w-fit rounded-xl bg-black px-6 py-3 text-white"
+            >
+              Thêm vào giỏ hàng
+            </button>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

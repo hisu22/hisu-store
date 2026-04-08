@@ -2,114 +2,157 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { auth, db } from "../../lib/firebase";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function DangKyPage() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleRegister = (e) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    try {
+      if (!username || !email || !password) {
+        alert("Nhập đầy đủ thông tin");
+        return;
+      }
 
-    if (!name || !password) {
-      alert("Vui lòng nhập đầy đủ họ tên và mật khẩu");
-      return;
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+
+      await updateProfile(result.user, {
+        displayName: username,
+      });
+
+      await setDoc(doc(db, "users", result.user.uid), {
+        username,
+        email,
+        uid: result.user.uid,
+        createdAt: new Date().toISOString(),
+      });
+
+      await sendEmailVerification(result.user);
+
+      alert("Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản.");
+
+      await signOut(auth);
+      window.location.href = "/dang-nhap";
+    } catch (error) {
+      alert(error.message);
     }
-
-    if (email && !email.endsWith("@gmail.com")) {
-      alert("Email phải có đuôi @gmail.com");
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    users.push({
-      name,
-      email,
-      password,
-      role: "user",
-    });
-
-    localStorage.setItem("users", JSON.stringify(users));
-    alert("Đăng ký thành công");
-
-    setName("");
-    setEmail("");
-    setPassword("");
   };
 
   return (
-    <div className="min-h-screen bg-white px-4 py-12 text-slate-900">
-      <div className="mx-auto max-w-5xl">
-        <Link href="/" className="text-sm font-semibold text-slate-600 hover:text-rose-500">
-          ← Quay về trang chủ
-        </Link>
+    <main className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-[#171717] md:px-6">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
+        <div className="grid w-full max-w-5xl overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-sm md:grid-cols-2">
+          <div className="hidden bg-[#e8dfd2] p-10 md:flex md:flex-col md:justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.28em] text-black/45">
+                Hisu Store
+              </p>
 
-        <div className="mt-8 grid overflow-hidden rounded-3xl border bg-white shadow-sm lg:grid-cols-2">
-          <div className="hidden bg-slate-100 lg:block">
-            <img
-              src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1400&q=60"
-              alt="Đăng ký"
-              className="h-full w-full object-cover"
-            />
-          </div>
+              <h2 className="mt-6 text-4xl font-semibold leading-tight">
+                Tạo tài khoản mới
+              </h2>
 
-          <div className="p-8 lg:p-10">
-            <div className="mb-6">
-              <div className="text-sm font-semibold text-rose-500">Tạo tài khoản mới</div>
-              <h1 className="mt-2 text-3xl font-extrabold">Đăng ký</h1>
+              <p className="mt-4 max-w-[360px] text-base leading-7 text-black/60">
+                Đăng ký để bắt đầu mua sắm, lưu đơn hàng và trải nghiệm giao
+                diện hiện đại, tối giản của Hisu Store.
+              </p>
             </div>
 
-            <form className="space-y-4" onSubmit={handleRegister}>
+            <div className="rounded-[24px] bg-white/70 p-5 backdrop-blur">
+              <p className="text-sm leading-6 text-black/60">
+                Tham gia nhanh để khám phá các sản phẩm decor, đèn và hot trend
+                theo phong cách gọn đẹp, dễ nhìn.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-6 sm:p-8 md:p-10">
+            <div className="mb-8">
+              <Link
+                href="/"
+                className="inline-flex items-center text-sm text-black/55 transition hover:text-black"
+              >
+                ← Về trang chủ
+              </Link>
+
+              <h1 className="mt-5 text-4xl font-semibold tracking-tight">
+                Đăng ký
+              </h1>
+
+              <p className="mt-2 text-sm leading-6 text-black/55">
+                Tạo tài khoản mới để sử dụng đầy đủ các chức năng.
+              </p>
+            </div>
+
+            <div className="space-y-4">
               <div>
-                <label className="mb-2 block text-sm font-semibold">Họ và tên</label>
+                <label className="mb-2 block text-sm font-medium text-black/70">
+                  Tên đăng nhập
+                </label>
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Nhập họ và tên"
-                  className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
+                  placeholder="Nhập tên đăng nhập"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full rounded-2xl border border-black/10 bg-[#f8f6f2] px-4 py-3.5 text-base outline-none transition focus:border-black/25 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Email</label>
+                <label className="mb-2 block text-sm font-medium text-black/70">
+                  Email
+                </label>
                 <input
-                  type="text"
+                  type="email"
+                  placeholder="Nhập email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Nhập email bất kỳ có đuôi @gmail.com"
-                  className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
+                  className="w-full rounded-2xl border border-black/10 bg-[#f8f6f2] px-4 py-3.5 text-base outline-none transition focus:border-black/25 focus:bg-white"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-semibold">Mật khẩu</label>
+                <label className="mb-2 block text-sm font-medium text-black/70">
+                  Mật khẩu
+                </label>
                 <input
                   type="password"
+                  placeholder="Nhập mật khẩu"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Nhập mật khẩu"
-                  className="w-full rounded-xl border px-4 py-3 outline-none focus:border-rose-400"
+                  className="w-full rounded-2xl border border-black/10 bg-[#f8f6f2] px-4 py-3.5 text-base outline-none transition focus:border-black/25 focus:bg-white"
                 />
               </div>
 
               <button
-                type="submit"
-                className="w-full rounded-xl bg-black px-4 py-3 font-semibold text-white hover:bg-slate-800"
+                onClick={handleRegister}
+                className="w-full rounded-2xl bg-black px-5 py-3.5 text-base font-medium text-white shadow-sm transition duration-150 hover:opacity-95 active:translate-y-[1px] active:scale-[0.985]"
               >
-                Tạo tài khoản
+                Đăng ký
               </button>
-            </form>
+            </div>
 
-            <p className="mt-6 text-sm text-slate-600">
+            <p className="mt-5 text-sm text-black/60">
               Đã có tài khoản?{" "}
-              <Link href="/dang-nhap" className="font-semibold text-rose-500 hover:text-rose-600">
+              <Link
+                href="/dang-nhap"
+                className="font-semibold text-black transition hover:opacity-70"
+              >
                 Đăng nhập
               </Link>
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
