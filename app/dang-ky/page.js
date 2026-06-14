@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { auth, db } from "../../lib/firebase";
+import { auth, db } from "../../lib/firebase"; // Giữ nguyên đường dẫn lib/firebase chuẩn của bạn [cite: 14, 91]
 import {
   createUserWithEmailAndPassword,
   updateProfile,
@@ -10,12 +10,17 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+
+// Import đúng đường dẫn tương đối từ app/dang-ky/ nhảy ra app/ 
 import Notification from "../Notification";
 
 export default function DangKyPage() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+  // SỬA LỖI: Thêm State kiểm soát ẩn hiện thông báo 
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleRegister = async () => {
     try {
@@ -39,10 +44,16 @@ export default function DangKyPage() {
 
       await sendEmailVerification(result.user);
 
+      // Kích hoạt hiển thị khung thông báo
       setShowNotification(true);
 
       await signOut(auth);
-      window.location.href = "/dang-nhap";
+
+      // TỐI ƯU LOGIC: Đợi đúng 2 giây cho thông báo chạy xong rồi mới chuyển trang
+      setTimeout(() => {
+        window.location.href = "/dang-nhap";
+      }, 2000);
+
     } catch (error) {
       alert(error.message);
     }
@@ -52,22 +63,20 @@ export default function DangKyPage() {
     <main className="min-h-screen bg-[#f6f3ee] px-4 py-8 text-[#171717] md:px-6">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
         <div className="grid w-full max-w-5xl overflow-hidden rounded-[32px] border border-black/10 bg-white shadow-sm md:grid-cols-2">
+          {/* Cột giới thiệu bên trái */}
           <div className="hidden bg-[#e8dfd2] p-10 md:flex md:flex-col md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.28em] text-black/45">
                 Hisu Store
               </p>
-
               <h2 className="mt-6 text-4xl font-semibold leading-tight">
                 Tạo tài khoản mới
               </h2>
-
               <p className="mt-4 max-w-[360px] text-base leading-7 text-black/60">
                 Đăng ký để bắt đầu mua sắm, lưu đơn hàng và trải nghiệm giao
                 diện đầy phong cách của Hisu Store.
               </p>
             </div>
-
             <div className="rounded-[24px] bg-white/70 p-5 backdrop-blur">
               <p className="text-sm leading-6 text-black/60">
                 Tham gia nhanh để khám phá các sản phẩm decor, đèn và áo hot trend
@@ -76,6 +85,7 @@ export default function DangKyPage() {
             </div>
           </div>
 
+          {/* Form điền thông tin bên phải */}
           <div className="p-6 sm:p-8 md:p-10">
             <div className="mb-8">
               <Link
@@ -84,11 +94,9 @@ export default function DangKyPage() {
               >
                 ← Về trang chủ
               </Link>
-
               <h1 className="mt-5 text-4xl font-semibold tracking-tight">
                 Đăng ký
               </h1>
-
               <p className="mt-2 text-sm leading-6 text-black/55">
                 Tạo tài khoản mới để sử dụng đầy đủ các chức năng.
               </p>
@@ -154,11 +162,13 @@ export default function DangKyPage() {
           </div>
         </div>
       </div>
+
+      {/* Component thông báo đặt ở cuối file */}
       <Notification 
-              show={showNotification} 
-              onClose={() => setShowNotification(false)} 
-              message="Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản" 
-            />
+        show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+        message="Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản" 
+      />
     </main>
   );
 }
