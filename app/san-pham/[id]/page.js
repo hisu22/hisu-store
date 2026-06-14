@@ -6,7 +6,7 @@ import Link from "next/link";
 import { db, auth } from "../../../lib/firebase";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import Notification from "../Notification";
+import Notification from "../../Notification";
 
 export default function ProductDetail() {
   const params = useParams();
