@@ -6,6 +6,7 @@ import Link from "next/link";
 import { db, auth } from "../../../lib/firebase";
 import { doc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import Notification from "../Notification";
 
 export default function ProductDetail() {
   const params = useParams();
@@ -15,6 +16,7 @@ export default function ProductDetail() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -220,7 +222,7 @@ export default function ProductDetail() {
                 }
 
                 localStorage.setItem(cartKey, JSON.stringify(cart));
-                alert("Đã thêm vào giỏ hàng");
+                setShowNotification(true);
               }}
               className="mt-8 w-fit rounded-xl bg-black px-6 py-3 text-white"
             >
@@ -229,6 +231,10 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
+      <Notification 
+        show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+      />
     </main>
   );
 }

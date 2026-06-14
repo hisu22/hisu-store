@@ -5,6 +5,7 @@ import Link from "next/link";
 import { auth, db } from "../lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import Notification from "./Notification";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,7 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -352,7 +354,7 @@ export default function Home() {
                           }
 
                           localStorage.setItem(cartKey, JSON.stringify(cart));
-                          alert("Đã thêm vào giỏ hàng");
+                          setShowNotification(true);
                         }}
                         className="rounded-full bg-black px-4 py-2 text-sm font-medium text-white"
                       >
@@ -408,6 +410,10 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <Notification 
+        show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+      />
     </main>
   );
 }

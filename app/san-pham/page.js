@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db, auth } from "../../lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import Notification from "../Notification";
 
 function SanPhamContent() {
   const [products, setProducts] = useState([]);
@@ -15,6 +16,7 @@ function SanPhamContent() {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const searchParams = useSearchParams();
 
@@ -384,7 +386,7 @@ function SanPhamContent() {
                         }
 
                         localStorage.setItem(cartKey, JSON.stringify(cart));
-                        alert("Đã thêm vào giỏ hàng");
+                        setShowNotification(true);
                       }}
                       className="rounded-full bg-black px-3 py-1.5 text-xs font-medium text-white"
                     >
@@ -397,6 +399,10 @@ function SanPhamContent() {
           </div>
         )}
       </section>
+      <Notification 
+        show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+      />
     </main>
   );
 }
