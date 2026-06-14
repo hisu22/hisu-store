@@ -10,6 +10,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import Notification from "../Notification";
 
 export default function DangKyPage() {
   const [username, setUsername] = useState("");
@@ -38,7 +39,7 @@ export default function DangKyPage() {
 
       await sendEmailVerification(result.user);
 
-      alert("Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản.");
+      setShowNotification(true);
 
       await signOut(auth);
       window.location.href = "/dang-nhap";
@@ -153,6 +154,11 @@ export default function DangKyPage() {
           </div>
         </div>
       </div>
+      <Notification 
+              show={showNotification} 
+              onClose={() => setShowNotification(false)} 
+              message="Đăng ký thành công. Vui lòng kiểm tra email để xác minh tài khoản" 
+            />
     </main>
   );
 }

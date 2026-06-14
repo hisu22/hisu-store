@@ -1,12 +1,23 @@
 'use client';
 
-export default function Notification({ show, onClose }) {
-  if (!show) return null;
+import { useEffect } from 'react';
 
-  // Tự động đóng sau 2 giây
-  themeTimeout(() => {
-    onClose();
-  }, 2000);
+// Sửa lỗi 1: Thêm biến message và đặt chữ mặc định nếu không truyền gì vào
+export default function Notification({ show, onClose, message = "Thêm vào giỏ hàng thành công!" }) {
+  
+  // Sửa lỗi 2: Dùng useEffect quản lý thời gian tự đóng 2 giây chuẩn Next.js
+  useEffect(() => {
+    if (!show) return;
+
+    const id = setTimeout(() => {
+      onClose();
+    }, 2000);
+
+    // Dọn dẹp bộ nhớ khi thông báo đóng lại
+    return () => clearTimeout(id);
+  }, [show, onClose]);
+
+  if (!show) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 animate-fade-in">
@@ -26,18 +37,10 @@ export default function Notification({ show, onClose }) {
           </svg>
         </div>
 
-        {/* Dòng chữ thông báo */}
-        <p className="text-gray-800 font-medium text-base">
-          Thêm vào giỏ hàng thành công!
-        </p>
+        {/* Dòng chữ thông báo linh hoạt */}
+        <p className="text-gray-800 font-medium text-base">{message}</p>
 
       </div>
     </div>
   );
-}
-
-// Hàm bổ trợ chạy timeout an toàn trong Next.js
-function themeTimeout(callback, delay) {
-  const id = setTimeout(callback, delay);
-  return () => clearTimeout(id);
 }

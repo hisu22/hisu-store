@@ -14,10 +14,12 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import Notification from "../Notification";
 
 export default function DangNhapPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleLogin = async () => {
     try {
@@ -61,7 +63,7 @@ export default function DangNhapPage() {
         return;
       }
 
-      alert("Đăng nhập thành công");
+      setShowNotification(true);
       window.location.href = "/";
     } catch (error) {
       alert("Sai tên đăng nhập hoặc mật khẩu");
@@ -170,6 +172,11 @@ export default function DangNhapPage() {
           </div>
         </div>
       </div>
+      <Notification 
+        show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+        message="Đăng nhập thành công!" 
+      />
     </main>
   );
 }
