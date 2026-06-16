@@ -123,71 +123,65 @@ export default function Home() {
 
           <div className="flex items-center gap-3">
             {user ? (
-              <>
-                <div className="relative">
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm"
-                  >
-                    {isAdmin
-                      ? `Admin: ${user.displayName || user.email}`
-                      : `${user.displayName || user.email}`}
-                  </button>
-
-                  {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl">
-                      {!isAdmin && (
-                        <Link
-                          href="/don-hang"
-                          onClick={() => setShowUserMenu(false)}
-                          className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
-                        >
-                          Đơn hàng của tôi
-                        </Link>
-                      )}
-
-                      <Link
-                        href="/doi-mat-khau"
-                        onClick={() => setShowUserMenu(false)}
-                        className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
-                      >
-                        Đổi mật khẩu
-                      </Link>
-
-                      <button
-                        onClick={() => signOut(auth)}
-                        className="block w-full px-4 py-3 text-left text-sm hover:bg-[#f4efe8]"
-                      >
-                        Đăng xuất
-                      </button>
-                    </div>
-                  )}
-                </div>
-
+              <div className="flex items-center gap-4 relative">
+                {/* NÚT QUẢN LÝ DÀNH RIÊNG CHO ADMIN - GIỮ NGUYÊN HOÀN TOÀN LOGIC CỦA BẠN */}
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className="hidden rounded-full bg-black px-4 py-2 text-sm text-white md:inline-block"
+                    className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-zinc-800 transition-colors"
                   >
                     Quản lý
                   </Link>
                 )}
-              </>
+
+                {/* Nút hiển thị Tên / Vai trò */}
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors text-sm font-medium text-zinc-700"
+                >
+                  <span>{isAdmin ? `Admin: ${user.username}` : user.username}</span>
+                </button>
+
+                {/* Menu Dropdown khi bấm vào tên */}
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5 z-50" style={{ top: '100%' }}>
+                    
+                    {/* Đơn hàng của tôi - Bây giờ cả Admin và User thường đều dùng được */}
+                    <Link
+                      href="/don-hang"
+                      onClick={() => setShowUserMenu(false)}
+                      className="block px-4 py-3 text-sm hover:bg-[#f4efe8] rounded-xl text-black"
+                    >
+                      Đơn hàng của tôi
+                    </Link>
+
+                    <Link
+                      href="/doi-mat-khau"
+                      onClick={() => setShowUserMenu(false)}
+                      className="block px-4 py-3 text-sm hover:bg-[#f4efe8] rounded-xl text-black"
+                    >
+                      Đổi mật khẩu
+                    </Link>
+
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        handleLogout();
+                      }}
+                      className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl"
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                )}
+              </div>
             ) : (
-              <>
-                <Link
-                  href="/dang-nhap"
-                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm"
-                >
-                  Đăng nhập
-                </Link>
-                <Link
-                  href="/dang-ky"
-                  className="rounded-full bg-black px-4 py-2 text-sm text-white"
-                >
-                  Đăng ký
-                </Link>
-              </>
+              <Link
+                href="/dang-nhap"
+                className="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-zinc-800 transition-colors"
+              >
+                Đăng nhập
+              </Link>
             )}
           </div>
         </div>
