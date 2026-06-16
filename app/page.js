@@ -14,6 +14,7 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,22 +34,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
 
-      if (!u) {
+      if (!currentUser) {
         setIsAdmin(false);
+        setUsername(""); // Xóa tên khi đăng xuất
+        localStorage.removeItem("hisu_role");
         return;
       }
 
-      const q = query(collection(db, "users"), where("uid", "==", u.uid));
-      const querySnapshot = await getDocs(q);
+      try {
+        const q = query(collection(db, "users"), where("uid", "==", currentUser.uid));
+        const querySnapshot = await getDocs(q);
 
-      if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        setIsAdmin(userData.role === "admin");
-      } else {
-        setIsAdmin(false);
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          const currentRole = userData.role;
+          
+          setIsAdmin(currentRole === "admin");
+          localStorage.setItem("hisu_role", currentRole);
+          
+          // LƯU Ý SỬA TẠI ĐÂY: Lấy đúng trường tên đăng ký của bạn (ví dụ: userData.username)
+          setUsername(userData.username || currentUser.displayName || currentUser.email);
+        }
+      } catch (error) {
+        console.error("Lỗi:", error);
       }
     });
 
@@ -136,11 +147,12 @@ export default function Home() {
                 )}
 
                 {/* Nút hiển thị Tên / Vai trò - Sửa lại dùng user.email chuẩn theo code gốc của bạn */}
+                // Sửa đoạn nút hiển thị tài khoản thành như thế này:
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors text-sm font-medium text-zinc-700"
+                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm"
                 >
-                  <span>{isAdmin ? `Admin: ${user.email}` : user.email}</span>
+                  {isAdmin ? `Admin: ${username}` : `${username}`}
                 </button>
 
                 {/* Menu Dropdown */}
