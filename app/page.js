@@ -122,9 +122,10 @@ export default function Home() {
           </nav>
 
           <div className="flex items-center gap-3">
+            {/* Thao tác tài khoản */}
             {user ? (
               <div className="flex items-center gap-4 relative">
-                {/* NÚT QUẢN LÝ DÀNH RIÊNG CHO ADMIN - GIỮ NGUYÊN HOÀN TOÀN LOGIC CỦA BẠN */}
+                {/* Nút Quản lý dành riêng cho Admin - Giữ nguyên logic gốc của bạn */}
                 {isAdmin && (
                   <Link
                     href="/admin"
@@ -134,19 +135,19 @@ export default function Home() {
                   </Link>
                 )}
 
-                {/* Nút hiển thị Tên / Vai trò */}
+                {/* Nút hiển thị Tên / Vai trò - Sửa lại dùng user.email chuẩn theo code gốc của bạn */}
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-100 hover:bg-zinc-200 transition-colors text-sm font-medium text-zinc-700"
                 >
-                  <span>{isAdmin ? `Admin: ${user.username}` : user.username}</span>
+                  <span>{isAdmin ? `Admin: ${user.email}` : user.email}</span>
                 </button>
 
-                {/* Menu Dropdown khi bấm vào tên */}
+                {/* Menu Dropdown */}
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5 z-50" style={{ top: '100%' }}>
                     
-                    {/* Đơn hàng của tôi - Bây giờ cả Admin và User thường đều dùng được */}
+                    {/* Đơn hàng của tôi - Hiển thị cho cả Admin và User thường */}
                     <Link
                       href="/don-hang"
                       onClick={() => setShowUserMenu(false)}
@@ -163,10 +164,11 @@ export default function Home() {
                       Đổi mật khẩu
                     </Link>
 
+                    {/* Nút đăng xuất - Sửa lại gọi đúng hàm signOut(auth) gốc của bạn */}
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
-                        handleLogout();
+                        signOut(auth);
                       }}
                       className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl"
                     >
