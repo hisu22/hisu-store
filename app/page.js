@@ -136,15 +136,14 @@ export default function Home() {
 
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl">
-                      {!isAdmin && (
-                        <Link
-                          href="/don-hang"
-                          onClick={() => setShowUserMenu(false)}
-                          className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
-                        >
-                          Đơn hàng của tôi
-                        </Link>
-                      )}
+                      {/* Hiển thị cho cả Admin và User thường */}
+                      <Link
+                        href="/don-hang"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
+                      >
+                        Đơn hàng của tôi
+                      </Link>
 
                       <Link
                         href="/doi-mat-khau"
