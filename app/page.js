@@ -14,7 +14,6 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -34,32 +33,22 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
+    const unsub = onAuthStateChanged(auth, async (u) => {
+      setUser(u);
 
-      if (!currentUser) {
+      if (!u) {
         setIsAdmin(false);
-        setUsername(""); // Xóa tên khi đăng xuất
-        localStorage.removeItem("hisu_role");
         return;
       }
 
-      try {
-        const q = query(collection(db, "users"), where("uid", "==", currentUser.uid));
-        const querySnapshot = await getDocs(q);
+      const q = query(collection(db, "users"), where("uid", "==", u.uid));
+      const querySnapshot = await getDocs(q);
 
-        if (!querySnapshot.empty) {
-          const userData = querySnapshot.docs[0].data();
-          const currentRole = userData.role;
-          
-          setIsAdmin(currentRole === "admin");
-          localStorage.setItem("hisu_role", currentRole);
-          
-          // LƯU Ý SỬA TẠI ĐÂY: Lấy đúng trường tên đăng ký của bạn (ví dụ: userData.username)
-          setUsername(userData.username || currentUser.displayName || currentUser.email);
-        }
-      } catch (error) {
-        console.error("Lỗi:", error);
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        setIsAdmin(userData.role === "admin");
+      } else {
+        setIsAdmin(false);
       }
     });
 
@@ -133,69 +122,72 @@ export default function Home() {
           </nav>
 
           <div className="flex items-center gap-3">
-            {/* Thao tác tài khoản */}
             {user ? (
-              <div className="flex items-center gap-4 relative">
-                {/* Nút Quản lý dành riêng cho Admin - Giữ nguyên logic gốc của bạn */}
+              <>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm"
+                  >
+                    {isAdmin
+                      ? `Admin: ${user.displayName || user.email}`
+                      : `${user.displayName || user.email}`}
+                  </button>
+
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-52 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl">
+                      {!isAdmin && (
+                        <Link
+                          href="/don-hang"
+                          onClick={() => setShowUserMenu(false)}
+                          className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
+                        >
+                          Đơn hàng của tôi
+                        </Link>
+                      )}
+
+                      <Link
+                        href="/doi-mat-khau"
+                        onClick={() => setShowUserMenu(false)}
+                        className="block px-4 py-3 text-sm hover:bg-[#f4efe8]"
+                      >
+                        Đổi mật khẩu
+                      </Link>
+
+                      <button
+                        onClick={() => signOut(auth)}
+                        className="block w-full px-4 py-3 text-left text-sm hover:bg-[#f4efe8]"
+                      >
+                        Đăng xuất
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 {isAdmin && (
                   <Link
                     href="/admin"
-                    className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-zinc-800 transition-colors"
+                    className="hidden rounded-full bg-black px-4 py-2 text-sm text-white md:inline-block"
                   >
                     Quản lý
                   </Link>
                 )}
-
-                {/* Nút hiển thị Tên / Vai trò - Sửa lại dùng user.email chuẩn theo code gốc của bạn */}
-                // Sửa đoạn nút hiển thị tài khoản thành như thế này:
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm shadow-sm"
-                >
-                  {isAdmin ? `Admin: ${username}` : `${username}`}
-                </button>
-
-                {/* Menu Dropdown */}
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-black/5 z-50" style={{ top: '100%' }}>
-                    
-                    {/* Đơn hàng của tôi - Hiển thị cho cả Admin và User thường */}
-                    <Link
-                      href="/don-hang"
-                      onClick={() => setShowUserMenu(false)}
-                      className="block px-4 py-3 text-sm hover:bg-[#f4efe8] rounded-xl text-black"
-                    >
-                      Đơn hàng của tôi
-                    </Link>
-
-                    <Link
-                      href="/doi-mat-khau"
-                      onClick={() => setShowUserMenu(false)}
-                      className="block px-4 py-3 text-sm hover:bg-[#f4efe8] rounded-xl text-black"
-                    >
-                      Đổi mật khẩu
-                    </Link>
-
-                    {/* Nút đăng xuất - Sửa lại gọi đúng hàm signOut(auth) gốc của bạn */}
-                    <button
-                      onClick={() => {
-                        setShowUserMenu(false);
-                        signOut(auth);
-                      }}
-                      className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl"
-                    >
-                      Đăng xuất
-                    </button>
-                  </div>
-                )}
-              </div>
+              </>
             ) : (
-              <Link
-                href="/dang-nhap"
-                className="bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-zinc-800 transition-colors"
-              >
-                Đăng nhập
-              </Link>
+              <>
+                <Link
+                  href="/dang-nhap"
+                  className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm"
+                >
+                  Đăng nhập
+                </Link>
+                <Link
+                  href="/dang-ky"
+                  className="rounded-full bg-black px-4 py-2 text-sm text-white"
+                >
+                  Đăng ký
+                </Link>
+              </>
             )}
           </div>
         </div>
