@@ -35,19 +35,36 @@ export default function Home() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser(u);
-
+      
       if (!u) {
         setIsAdmin(false);
         return;
       }
 
-      const q = query(collection(db, "users"), where("uid", "==", u.uid));
-      const querySnapshot = await getDocs(q);
+      // Ưu tiên lấy từ localStorage trước (rất nhanh)
+      const cachedRole = localStorage.getItem(`role_${u.uid}`);
+      if (cachedRole) {
+        setIsAdmin(cachedRole === "admin");
+      }
 
-      if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        setIsAdmin(userData.role === "admin");
-      } else {
+      // Sau đó mới query Firestore để đồng bộ
+      try {
+        const q = query(collection(db, "users"), where("uid", "==", u.uid));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const userData = querySnapshot.docs[0].data();
+          const isAdminRole = userData.role === "admin";
+          
+          setIsAdmin(isAdminRole);
+          // Cache lại
+          localStorage.setItem(`role_${u.uid}`, isAdminRole ? "admin" : "user");
+        } else {
+          setIsAdmin(false);
+          localStorage.setItem(`role_${u.uid}`, "user");
+        }
+      } catch (error) {
+        console.error("Lỗi check admin:", error);
         setIsAdmin(false);
       }
     });
